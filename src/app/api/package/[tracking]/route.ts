@@ -27,6 +27,7 @@ export async function GET(
 
 export async function PUT(
     req: NextRequest,
+    _:any,
     { params }: { params: params }
 ) {
     try {
