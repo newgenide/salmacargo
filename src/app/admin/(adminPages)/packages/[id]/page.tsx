@@ -1,19 +1,19 @@
-// Client Component
-'use client';
-
+import { Metadata } from 'next';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, ArrowLeft, Trash2 } from 'lucide-react';
 import { IPackage, IShipmentHistory } from '@/types/models';
 
-interface Props {
-  params: {
-    id: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
+export const metadata: Metadata = {
+  title: 'Manage Package',
+  description: 'Manage package details and shipment history'
+};
+
+interface PageProps {
+  params: { id: string };
 }
 
-const ManagePackage = ({ params, searchParams }: Props) => {
+export default async function Page({ params }: PageProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -697,6 +697,4 @@ const ManagePackage = ({ params, searchParams }: Props) => {
       )}
     </div>
   );
-};
-
-export default ManagePackage;
+}
