@@ -1,3 +1,14 @@
+import { Metadata } from 'next';
+
+// Server Component
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  return {
+    title: `Manage Package ${params.id}`,
+    description: 'Manage package details and shipment history'
+  };
+}
+
+// Client Component
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -6,14 +17,14 @@ import { Save, ArrowLeft, Trash2 } from 'lucide-react';
 import { IPackage, IShipmentHistory } from '@/types/models';
 import SuccessMessage from '@/components/ui/success-message';
 
-interface PageProps {
+interface Props {
   params: {
     id: string;
   };
   searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-const ManagePackage = ({ params, searchParams }: PageProps) => {
+const ManagePackage = ({ params, searchParams }: Props) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -25,8 +36,6 @@ const ManagePackage = ({ params, searchParams }: PageProps) => {
   const [currentLocation, setCurrentLocation] = useState('');
   const [status, setStatus] = useState('');
   const [notes, setNotes] = useState('');
-
-  // Package update form state
   const [packageForm, setPackageForm] = useState({
     senderName: '',
     senderEmail: '',
@@ -40,7 +49,7 @@ const ManagePackage = ({ params, searchParams }: PageProps) => {
     freight: '',
     charges: '',
     description: '',
-    expectedDeliveryDate: '',
+    expectedDeliveryDate: ''
   });
 
   useEffect(() => {
@@ -62,7 +71,7 @@ const ManagePackage = ({ params, searchParams }: PageProps) => {
         freight: packageData.freight || '',
         charges: packageData.charges?.toString() || '',
         description: packageData.description || '',
-        expectedDeliveryDate: packageData.expectedDeliveryDate ? new Date(packageData.expectedDeliveryDate).toISOString().split('T')[0] : '',
+        expectedDeliveryDate: packageData.expectedDeliveryDate ? new Date(packageData.expectedDeliveryDate).toISOString().split('T')[0] : ''
       });
     }
   }, [packageData]);
@@ -90,7 +99,7 @@ const ManagePackage = ({ params, searchParams }: PageProps) => {
         freight: data.package.freight || '',
         charges: data.package.charges?.toString() || '',
         description: data.package.description || '',
-        expectedDeliveryDate: data.package.expectedDeliveryDate ? new Date(data.package.expectedDeliveryDate).toISOString().split('T')[0] : '',
+        expectedDeliveryDate: data.package.expectedDeliveryDate ? new Date(data.package.expectedDeliveryDate).toISOString().split('T')[0] : ''
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
