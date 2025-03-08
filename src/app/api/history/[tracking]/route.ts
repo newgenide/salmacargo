@@ -56,7 +56,7 @@ export async function POST(req:NextRequest, res:NextResponse, {params}:{params:p
 }
 
 
-export async function PUT(req:NextRequest, res:NextResponse, {params}:{params:params}){
+export async function PUT(req:NextRequest, {params}:{params:params}){
     try{
         const {
             id,
@@ -82,7 +82,7 @@ export async function PUT(req:NextRequest, res:NextResponse, {params}:{params:pa
     }
 }
 
-export async function DELETE(req:NextRequest, res:NextResponse){
+export async function DELETE(req:NextRequest){
     try{
         const {id} = await req.json();   
         await connectDb();

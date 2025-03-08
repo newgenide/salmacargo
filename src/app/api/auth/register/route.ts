@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import User from "@/models/user";
 import { connectDb } from "@/utils";
 
-export async function POST(req:NextRequest, res:NextResponse){
+export async function POST(req:NextRequest){
     try{
         const {username, email, password} = await req.json();
         if(!username || !email || !password){
