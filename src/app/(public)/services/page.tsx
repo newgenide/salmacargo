@@ -1,17 +1,8 @@
 'use client';
 
-import { Metadata } from 'next';
-import { getSiteMetadata } from '@/utils/metadata';
 import PageTitle from '@/components/layout/PageTitle';
 import { Plane, Ship, Truck, Package, Clock, Shield } from 'lucide-react';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { siteName } = await getSiteMetadata();
-  return {
-    title: `Our Services | ${siteName}`,
-    description: 'Explore our comprehensive range of shipping and logistics services'
-  };
-}
 
 const services = [
   {

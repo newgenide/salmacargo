@@ -1,16 +1,10 @@
-import { Metadata } from 'next';
-import { getSiteMetadata } from '@/utils/metadata';
+"use client"
+
 import PageTitle from '@/components/layout/PageTitle';
 import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 
-export async function generateMetadata(): Promise<Metadata> {
-  const { siteName } = await getSiteMetadata();
-  return {
-    title: `FAQ | ${siteName}`,
-    description: 'Frequently asked questions about our courier services'
-  };
-}
+
 
 interface FaqItem {
   question: string;
