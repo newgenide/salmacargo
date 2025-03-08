@@ -3,7 +3,7 @@ import User from "@/models/user";
 import { NextRequest, NextResponse } from 'next/server';
 import { connectDb } from '@/utils';
 
-export async function PUT(req:NextRequest, res:NextResponse){
+export async function PUT(req:NextRequest){
     try{
         const {password, userId} = await req.json();
         const user = await User.findById(userId);
