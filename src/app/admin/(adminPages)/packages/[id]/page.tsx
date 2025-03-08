@@ -1,13 +1,3 @@
-import { Metadata } from 'next';
-
-// Server Component
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  return {
-    title: `Manage Package ${params.id}`,
-    description: 'Manage package details and shipment history'
-  };
-}
-
 // Client Component
 'use client';
 
@@ -15,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, ArrowLeft, Trash2 } from 'lucide-react';
 import { IPackage, IShipmentHistory } from '@/types/models';
-import SuccessMessage from '@/components/ui/success-message';
 
 interface Props {
   params: {
