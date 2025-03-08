@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, ArrowLeft, Trash2 } from 'lucide-react';
 import { IPackage, IShipmentHistory } from '@/types/models';
@@ -12,7 +12,7 @@ interface PageProps {
   };
 }
 
-export default function ManagePackage({ params }: PageProps) {
+const ManagePackage: FC<PageProps> = ({ params }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -699,3 +699,7 @@ export default function ManagePackage({ params }: PageProps) {
     </div>
   );
 }
+
+
+
+export default ManagePackage
