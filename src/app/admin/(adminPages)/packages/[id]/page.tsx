@@ -1,7 +1,4 @@
 import { Metadata } from 'next';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { Save, ArrowLeft, Trash2 } from 'lucide-react';
 import { IPackage, IShipmentHistory } from '@/types/models';
 
 export const metadata: Metadata = {
@@ -9,11 +6,23 @@ export const metadata: Metadata = {
   description: 'Manage package details and shipment history'
 };
 
-interface PageProps {
-  params: { id: string };
+interface Props {
+  params: { id: string }
 }
 
-export default async function Page({ params }: PageProps) {
+export default function Page({ params }: Props) {
+  return (
+    <PackageManager id={params.id} />
+  );
+}
+
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Save, ArrowLeft, Trash2 } from 'lucide-react';
+
+function PackageManager({ id }: { id: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -68,7 +77,7 @@ export default async function Page({ params }: PageProps) {
   const fetchPackage = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/package/track?id=${encodeURIComponent(params.id)}`);
+      const response = await fetch(`/api/package/track?id=${encodeURIComponent(id)}`);
       if (!response.ok) throw new Error('Failed to fetch package');
       const data = await response.json();
       setPackageData(data.package);
@@ -113,7 +122,7 @@ export default async function Page({ params }: PageProps) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          trackingID: params.id,
+          trackingID: id,
           currentLocation,
           status,
           notes,
@@ -141,14 +150,14 @@ export default async function Page({ params }: PageProps) {
     try {
       setSaving(true);
       setError(null);
-      const response = await fetch(`/api/package/${params.id}`, {
+      const response = await fetch(`/api/package/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...packageForm,
-          tracking: params.id,
+          tracking: id,
         }),
       });
 
@@ -184,51 +193,44 @@ export default async function Page({ params }: PageProps) {
   };
 
   const handleDeleteHistory = async (id: string, index: number) => {
-    // Prevent deletion of the latest history entry
     if (index === 0) {
       setError('Cannot delete the current package status. Please update the status instead.');
       setTimeout(() => setError(null), 3000);
       return;
     }
 
-    // Add confirmation dialog
     if (!window.confirm('Are you sure you want to delete this history entry? This action cannot be undone.')) {
       return;
     }
 
     try {
       setError(null);
-      const response = await fetch(`/api/history/${params.id}`, {
+      const response = await fetch(`/api/history/${id}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id }),
       });
 
       if (!response.ok) {
         const data = await response.json();
-        throw new Error(data.message || 'Failed to delete history');
+        throw new Error(data.message || 'Failed to delete history entry');
       }
 
-      await fetchPackage(); // Refresh data
+      await fetchPackage();
       setSuccess('History entry deleted successfully');
       setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete history');
+      setError(err instanceof Error ? err.message : 'Failed to delete history entry');
     }
   };
 
   const handleDeletePackage = async () => {
-    // Add confirmation dialog with package tracking ID for verification
-    if (!window.confirm(`Are you sure you want to delete package ${params.id}? This action cannot be undone and will delete all associated history.`)) {
+    if (!window.confirm(`Are you sure you want to delete package ${id}? This action cannot be undone and will delete all associated history.`)) {
       return;
     }
 
     try {
       setDeleting(true);
       setError(null);
-      const response = await fetch(`/api/package/${params.id}`, {
+      const response = await fetch(`/api/package/${id}`, {
         method: 'DELETE',
       });
 
@@ -239,7 +241,7 @@ export default async function Page({ params }: PageProps) {
 
       setSuccess('Package deleted successfully. Redirecting...');
       setTimeout(() => {
-        router.push('/admin/packages'); // Redirect to packages list
+        router.push('/admin/packages'); 
       }, 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to delete package');
@@ -260,7 +262,7 @@ export default async function Page({ params }: PageProps) {
             Back
           </button>
           <h1 className="text-base font-semibold leading-7 text-gray-900">
-            Package Details - {params.id}
+            Package Details - {id}
           </h1>
         </div>
         <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
