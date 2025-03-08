@@ -106,7 +106,7 @@ const CookiesPage = () => {
               Cookie Policy
             </h1>
             <p className="text-lg text-white/90">
-              How {siteData.siteName} uses cookies to improve your experience
+              How we uses cookies to improve your experience
             </p>
           </div>
         </div>
@@ -128,7 +128,7 @@ const CookiesPage = () => {
         <div className="container mx-auto">
           <div className="max-w-3xl mx-auto prose">
             <p className="text-text-secondary text-lg">
-              This Cookie Policy explains how {siteData.siteName} uses cookies and similar tracking technologies on our website. By using our website, you consent to the use of cookies as described in this policy.
+              This Cookie Policy explains how we use cookies and similar tracking technologies on our website. By using our website, you consent to the use of cookies as described in this policy.
             </p>
           </div>
         </div>
@@ -212,7 +212,7 @@ const CookiesPage = () => {
               If you have any questions about how we use cookies, please contact us at:
             </p>
             <a
-              href={`mailto:${siteData.email}`}
+              href={`mailto`}
               className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary-light transition-colors"
             >
               Contact Support Team
