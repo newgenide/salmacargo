@@ -12,7 +12,7 @@ interface PageProps {
   };
 }
 
-const ManagePackage: FC<PageProps> = ({ params }) => {
+const ManagePackage = ({ params }: PageProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
