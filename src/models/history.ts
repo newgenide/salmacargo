@@ -1,3 +1,4 @@
+import { IShipmentHistory } from '@/types/models';
 import {model, models, Schema} from 'mongoose'
 
 const ShipmentSchema = new Schema<IShipmentHistory>({
@@ -6,6 +7,10 @@ const ShipmentSchema = new Schema<IShipmentHistory>({
         required: true
     },
     currentLocation: String,
+    currentCoords: {
+        type: [Number],
+        required: true
+    },
     status: {
         type: String,
         required: true

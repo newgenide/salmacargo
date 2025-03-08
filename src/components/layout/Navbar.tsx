@@ -9,7 +9,7 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const [trackingNumber, setTrackingNumber] = useState('');
-  const siteData = useSite();
+  const site = useSite();
 
   const handleTracking = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,17 +25,17 @@ const Navbar = () => {
         <div className="container mx-auto px-4 py-2">
           <div className="flex justify-between items-center text-sm">
             <div className="flex items-center space-x-6">
-              <a href={`mailto:${siteData.email}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
+              <a href={`mailto:${site.siteData.email}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
                 <Mail className="h-4 w-4 mr-2" />
-                {siteData.email}
+                {site.siteData.email}
               </a>
-              <a href={`tel:${siteData.phone}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
+              <a href={`tel:${site.siteData.phone}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
                 <Phone className="h-4 w-4 mr-2" />
-                {siteData.phone}
+                {site.siteData.phone}
               </a>
               <div className="flex items-center text-text-primary">
                 <MapPin className="h-4 w-4 mr-2" />
-                {siteData.address}
+                {site.siteData.address}
               </div>
             </div>
             <div className="flex items-center space-x-4">
@@ -44,11 +44,32 @@ const Navbar = () => {
                   className="appearance-none bg-white text-text-primary pr-8 pl-2 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20"
                   onChange={(e) => {
                     const lang = e.target.value;
-                    if (window.google?.translate) {
-                      const select = document.querySelector('.goog-te-combo') as HTMLSelectElement;
-                      if (select) {
-                        select.value = lang;
-                        select.dispatchEvent(new Event('change'));
+                    // Get the Google Translate widget
+                    const element = document.getElementById('google_translate_element');
+                    if (element) {
+                      // Find the select within the widget
+                      const selects = element.getElementsByTagName('select');
+                      if (selects.length > 0) {
+                        const gtSelect = selects[0];
+                        // Set the value and trigger change
+                        gtSelect.value = lang;
+                        // Create and dispatch change event
+                        const event = new Event('change', { bubbles: true });
+                        gtSelect.dispatchEvent(event);
+                      } else {
+                        // If select not found, try to initialize Google Translate
+                        const waitForGoogle = setInterval(() => {
+                          const newSelects = element.getElementsByTagName('select');
+                          if (newSelects.length > 0) {
+                            clearInterval(waitForGoogle);
+                            const gtSelect = newSelects[0];
+                            gtSelect.value = lang;
+                            const event = new Event('change', { bubbles: true });
+                            gtSelect.dispatchEvent(event);
+                          }
+                        }, 100);
+                        // Clear interval after 5 seconds
+                        setTimeout(() => clearInterval(waitForGoogle), 5000);
                       }
                     }
                   }}
@@ -74,8 +95,8 @@ const Navbar = () => {
       {/* Main Navbar */}
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
-          <Link href="/" className="text-xl font-bold text-primary">
-            {siteData.siteName}
+          <Link href="/" className="flex items-center">
+            <span className="text-primary font-bold text-xl">{site.siteData.siteName}</span>
           </Link>
 
           {/* Desktop Menu */}
@@ -104,17 +125,17 @@ const Navbar = () => {
               <Link href="/faq" className="text-text-primary hover:text-primary transition-colors">FAQ</Link>
               <Link href="/contact" className="text-text-primary hover:text-primary transition-colors">Contact</Link>
               <div className="pt-4 border-t space-y-2">
-                <a href={`mailto:${siteData.email}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
+                <a href={`mailto:${site.siteData.email}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
                   <Mail className="h-4 w-4 mr-2" />
-                  {siteData.email}
+                  {site.siteData.email}
                 </a>
-                <a href={`tel:${siteData.phone}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
+                <a href={`tel:${site.siteData.phone}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
                   <Phone className="h-4 w-4 mr-2" />
-                  {siteData.phone}
+                  {site.siteData.phone}
                 </a>
                 <div className="flex items-center text-text-primary">
                   <MapPin className="h-4 w-4 mr-2" />
-                  {siteData.address}
+                  {site.siteData.address}
                 </div>
               </div>
             </div>

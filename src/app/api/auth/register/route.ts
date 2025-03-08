@@ -14,6 +14,10 @@ export async function POST(req:NextRequest, res:NextResponse){
         }
 
         await connectDb();
+        const userExists = await User.findOne({$or:[{email}, {username}]});
+        if(userExists){
+            return NextResponse.json({message:"user with that email or username already exists"}, {status: 400})
+        }
         const salt = await bcrypt.genSalt(Number(process.env.bcrypt_round));
         const hash = await bcrypt.hash(password, salt);
         const user = await User.create({

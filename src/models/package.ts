@@ -1,34 +1,77 @@
+import { IPackage } from '@/types/models';
 import {model, models, Schema} from 'mongoose'
 
 const PackageSchema = new Schema<IPackage>({
-    trackingID:{
+    trackingID: {
+        type: String,
+        required: true,
+        unique: true,
+        index: true
+    },
+    senderName: {
         type: String,
         required: true
     },
-    senderName: {
-        String,
-        required: true
+    senderEmail: {
+        type: String,
+        trim: true,
+        lowercase: true
     },
-    senderEmail: String,
     senderPhone: String,
-    originAddress: String,
-    receiverName: {
-        String,
+    originAddress: {
+        type: String,
         required: true
     },
-    receiverEmail: String,
+    currentLocation: {
+        type: String,
+        required: true
+    },
+    receiverName: {
+        type: String,
+        required: true
+    },
+    receiverEmail: {
+        type: String,
+        trim: true,
+        lowercase: true
+    },
     receiverPhone: String,
-    destinationAddress: String,
-    expectedDeliveryDate: Date,
-    weight: String,
-    freight: String,
+    destinationAddress: {
+        type: String,
+        required: true
+    },
+    expectedDeliveryDate: {
+        type: Date,
+        required: true
+    },
+    weight: {
+        type: String,
+        required: true
+    },
+    freight: {
+        type: String,
+        enum: ['air', 'land', 'sea'],
+        required: true
+    },
     description: String,
-    charges: Number,
-    status: String
-},{
+    charges: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'processing', 'in transit', 'delivered', 'cancelled'],
+        default: 'pending',
+        required: true
+    }
+}, {
     timestamps: true
 })
 
-const Package = models.Package || model('Package', PackageSchema);
+// Create indexes for frequently queried fields
+PackageSchema.index({ status: 1 });
+PackageSchema.index({ updatedAt: -1 });
 
+const Package = models.Package || model<IPackage>('Package', PackageSchema);
 export default Package;

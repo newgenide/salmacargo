@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import * as fetch from 'node-fetch'
 
 export async function generateTracking(){
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -22,5 +23,20 @@ export async function connectDb(){
     }catch(error:any){
         console.error('MongoDB connection error:', error);
         throw error; // Re-throw the error for better error handling
+    }
+}
+
+
+export async function geocodeAddress(address:string){
+    try{
+        const req = await fetch.default(`https://geocode.maps.co/search?q=${address}&api_key=${process.env.GEOCODE_API}`);
+        const res:any = await req.json();
+        if(res.length > 0){
+            return [res[0].lat, res[0].lon];
+        }
+        return null;
+    }catch(error:any){
+        console.log('error generating geocode');
+        throw error;
     }
 }

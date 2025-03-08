@@ -2,33 +2,37 @@ import Package from "@/models/package";
 import { connectDb } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
 
-
-interface params{
+interface params {
     tracking: string
 }
 
-export async function GET(req:NextRequest,res:NextResponse, {params}:{params: params}){
-    try{
+export async function GET(
+    req: NextRequest,
+    { params }: { params: params }
+) {
+    try {
         await connectDb();
-        const packageItem = await Package.findOne({trackingID: params.tracking});
-        if(packageItem){
-            return NextResponse.json({packageItem});
+        const packageItem = await Package.findOne({ trackingID: params.tracking });
+        if (packageItem) {
+            return NextResponse.json({ packageItem });
         }
-        return NextResponse.json({message: 'package not found'}, {status: 404});
-    }catch(error:any){
+        return NextResponse.json({ message: 'package not found' }, { status: 404 });
+    } catch (error: any) {
         console.log(error);
         return NextResponse.json({
             message: 'Internal server error'
-        }, {status: 500});
+        }, { status: 500 });
     }
 }
 
-export async function PUT(req:NextRequest,res:NextResponse, {params}:{params: params}){
-    try{
+export async function PUT(
+    req: NextRequest,
+    { params }: { params: params }
+) {
+    try {
         await connectDb();
-        const packageItem = await Package.findOne({trackingID: params.tracking});
+        const packageItem = await Package.findOne({ trackingID: params.tracking });
         const {
-            trackingID,
             senderName,
             senderEmail,
             senderPhone,
@@ -41,52 +45,80 @@ export async function PUT(req:NextRequest,res:NextResponse, {params}:{params: pa
             weight,
             freight,
             charges,
-            description,
-            status
+            description
         } = await req.json();
-        
-        if(packageItem){
-            packageItem.trackingID = trackingID;
-            packageItem.senderName = senderName;
-            packageItem.senderEmail = senderEmail;
-            packageItem.senderPhone = senderPhone;
-            packageItem.originAddress = originAddress;
-            packageItem.receiverName = receiverName;
-            packageItem.receiverEmail = receiverEmail;
-            packageItem.receiverPhone = receiverPhone;
-            packageItem.destinationAddress = destinationAddress;
-            packageItem.expectedDeliveryDate = expectedDeliveryDate;
-            packageItem.weight = weight;
-            packageItem.freight = freight;
-            packageItem.charges = charges;
-            packageItem.description = description;
-            packageItem.status = status;
-            await packageItem.save();
-            return NextResponse.json({packageItem});
+
+        if (!packageItem) {
+            return NextResponse.json({ message: 'package not found' }, { status: 404 });
         }
-        return NextResponse.json({message: 'package not found'}, {status: 404});
-    }catch(error:any){
+
+        // Validate required fields
+        if (!senderName || !originAddress || !receiverName || !destinationAddress || !weight || !freight || !charges || !expectedDeliveryDate) {
+            return NextResponse.json({ message: 'Required fields are missing' }, { status: 400 });
+        }
+
+        // Validate email formats if provided
+        if (senderEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(senderEmail)) {
+            return NextResponse.json({ message: 'Invalid sender email format' }, { status: 400 });
+        }
+        if (receiverEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(receiverEmail)) {
+            return NextResponse.json({ message: 'Invalid receiver email format' }, { status: 400 });
+        }
+
+        // Validate numeric fields
+        if (isNaN(Number(charges)) || Number(charges) <= 0) {
+            return NextResponse.json({ message: 'Charges must be a positive number' }, { status: 400 });
+        }
+
+        // Validate delivery date is in the future
+        const deliveryDate = new Date(expectedDeliveryDate);
+        if (deliveryDate < new Date()) {
+            return NextResponse.json({ message: 'Expected delivery date must be in the future' }, { status: 400 });
+        }
+
+        // Update package with validated data
+        Object.assign(packageItem, {
+            senderName,
+            senderEmail,
+            senderPhone,
+            originAddress,
+            receiverName,
+            receiverEmail,
+            receiverPhone,
+            destinationAddress,
+            expectedDeliveryDate,
+            weight,
+            freight,
+            charges,
+            description
+        });
+
+        await packageItem.save();
+        return NextResponse.json({ packageItem });
+    } catch (error: any) {
         console.log(error);
         return NextResponse.json({
             message: 'Internal server error'
-        }, {status: 500});
+        }, { status: 500 });
     }
 }
 
-export async function DELETE(req:NextRequest,res:NextResponse){
-    try{
-        const {tracking} = await req.json();
+export async function DELETE(
+    req: NextRequest,
+    { params }: { params: params }
+) {
+    try {
         await connectDb();
-        const packageItem = await Package.findOne({trackingID: tracking});
-        if(packageItem){
-            await packageItem.remove();
-            return NextResponse.json({message: 'package deleted successfully'});
+        const result = await Package.findOneAndDelete({ trackingID: params.tracking });
+        
+        if (result) {
+            return NextResponse.json({ message: 'Package deleted successfully' });
         }
-        return NextResponse.json({message: 'package not found'}, {status: 404});
-    }catch(error:any){
+        return NextResponse.json({ message: 'Package not found' }, { status: 404 });
+    } catch (error: any) {
         console.log(error);
         return NextResponse.json({
             message: 'Internal server error'
-        }, {status: 500});
+        }, { status: 500 });
     }
 }

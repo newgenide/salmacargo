@@ -1,24 +1,23 @@
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google'
+import { Inter } from 'next/font/google'
 import './globals.css'
-import { Metadata } from 'next'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
-import Script from 'next/script'
 import { SiteProvider } from '@/context/SiteContext'
+import { getSiteMetadata } from '@/utils/metadata'
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
+const inter = Inter({ subsets: ['latin'] })
 
-const jakarta = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-jakarta',
-})
-
-export const metadata: Metadata = {
-  title: 'Courier Service',
-  description: 'Fast & Reliable Worldwide Shipping Solutions',
+export async function generateMetadata() {
+  const { siteName, description } = await getSiteMetadata();
+  
+  return {
+    title: {
+      template: `%s | ${siteName}`,
+      default: siteName,
+    },
+    description,
+    icons: {
+      icon: '/favicon.ico',
+    },
+  }
 }
 
 export default function RootLayout({
@@ -27,30 +26,10 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jakarta.variable}`}>
-      <head>
-        <Script
-          src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-          strategy="afterInteractive"
-        />
-        <Script id="google-translate" strategy="afterInteractive">
-          {`
-            function googleTranslateElementInit() {
-              new google.translate.TranslateElement({
-                pageLanguage: 'en',
-                includedLanguages: 'en,es,fr,de',
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-              }, 'google_translate_element');
-            }
-          `}
-        </Script>
-      </head>
-      <body className="font-sans antialiased">
-        <div id="google_translate_element" className="hidden" />
+    <html lang="en">
+      <body className={inter.className}>
         <SiteProvider>
-          <Navbar />
           {children}
-          <Footer />
         </SiteProvider>
       </body>
     </html>
