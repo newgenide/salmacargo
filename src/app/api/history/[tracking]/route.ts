@@ -7,7 +7,7 @@ interface params{
     tracking: string
 }
 
-export async function GET(req:NextRequest,res:NextResponse, {params}:{params: params}){
+export async function GET(req:NextRequest,_:any,{params}:{params: any}){
     try{
         await connectDb();
         const shipmentHistory = await ShipmentHistory.find({trackingID: params.tracking});
@@ -23,7 +23,7 @@ export async function GET(req:NextRequest,res:NextResponse, {params}:{params: pa
     }
 }
 
-export async function POST(req:NextRequest, res:NextResponse, {params}:{params:params}){
+export async function POST(req:NextRequest, _:any, {params}:{params:any}){
     try{
         const {
             status,
