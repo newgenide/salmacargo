@@ -7,6 +7,8 @@ interface params {
 }
 
 export async function GET(
+    req:NextRequest,
+    _:any,
     { params }: { params: any }
 ) {
     try {
