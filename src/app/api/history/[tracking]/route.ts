@@ -56,7 +56,7 @@ export async function POST(req:NextRequest, res:NextResponse, {params}:{params:p
 }
 
 
-export async function PUT(req:NextRequest, {params}:{params:params}){
+export async function PUT(req:NextRequest){
     try{
         const {
             id,
