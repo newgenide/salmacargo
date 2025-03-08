@@ -2,7 +2,7 @@ import Site from "@/models/site";
 import { connectDb } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:NextRequest, res:NextResponse){
+export async function GET(){
     try{
         await connectDb();
         const site = await Site.findOne({}) || {};
@@ -15,7 +15,7 @@ export async function GET(req:NextRequest, res:NextResponse){
     }
 }
 
-export async function POST(req:NextRequest, res:NextResponse){
+export async function POST(req:NextRequest){
     try{
         const {
             siteName,
