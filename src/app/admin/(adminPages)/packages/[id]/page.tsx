@@ -6,9 +6,8 @@ interface PageProps {
   params: { id: string };
 }
 
-export default async function Page({ params }: PageProps) {
-  const {id} = await params;
+export default function Page({ params }: PageProps) {
   return (
-    <PackageManager id={id} />
+    <PackageManager id={params.id} />
   );
 }
