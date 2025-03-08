@@ -10,7 +10,7 @@ interface SiteData {
 }
 
 interface SiteContextType {
-  siteData: SiteData;
+  siteData: any;
   isLoading: boolean;
 }
 
