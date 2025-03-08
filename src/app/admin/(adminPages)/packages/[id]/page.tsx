@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, FC } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Save, ArrowLeft, Trash2 } from 'lucide-react';
 import { IPackage, IShipmentHistory } from '@/types/models';
@@ -10,17 +10,18 @@ interface PageProps {
   params: {
     id: string;
   };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
-const ManagePackage = ({ params }: PageProps) => {
+const ManagePackage = ({ params, searchParams }: PageProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-  const [package_, setPackage] = useState<IPackage | null>(null);
-  const [history, setHistory] = useState<IShipmentHistory[]>([]);
+  const [packageData, setPackageData] = useState<IPackage | null>(null);
+  const [shipmentHistory, setShipmentHistory] = useState<IShipmentHistory[]>([]);
   const [currentLocation, setCurrentLocation] = useState('');
   const [status, setStatus] = useState('');
   const [notes, setNotes] = useState('');
@@ -47,24 +48,24 @@ const ManagePackage = ({ params }: PageProps) => {
   }, []);
 
   useEffect(() => {
-    if (package_) {
+    if (packageData) {
       setPackageForm({
-        senderName: package_.senderName || '',
-        senderEmail: package_.senderEmail || '',
-        senderPhone: package_.senderPhone || '',
-        originAddress: package_.originAddress || '',
-        receiverName: package_.receiverName || '',
-        receiverEmail: package_.receiverEmail || '',
-        receiverPhone: package_.receiverPhone || '',
-        destinationAddress: package_.destinationAddress || '',
-        weight: package_.weight || '',
-        freight: package_.freight || '',
-        charges: package_.charges?.toString() || '',
-        description: package_.description || '',
-        expectedDeliveryDate: package_.expectedDeliveryDate ? new Date(package_.expectedDeliveryDate).toISOString().split('T')[0] : '',
+        senderName: packageData.senderName || '',
+        senderEmail: packageData.senderEmail || '',
+        senderPhone: packageData.senderPhone || '',
+        originAddress: packageData.originAddress || '',
+        receiverName: packageData.receiverName || '',
+        receiverEmail: packageData.receiverEmail || '',
+        receiverPhone: packageData.receiverPhone || '',
+        destinationAddress: packageData.destinationAddress || '',
+        weight: packageData.weight || '',
+        freight: packageData.freight || '',
+        charges: packageData.charges?.toString() || '',
+        description: packageData.description || '',
+        expectedDeliveryDate: packageData.expectedDeliveryDate ? new Date(packageData.expectedDeliveryDate).toISOString().split('T')[0] : '',
       });
     }
-  }, [package_]);
+  }, [packageData]);
 
   const fetchPackage = async () => {
     try {
@@ -72,8 +73,8 @@ const ManagePackage = ({ params }: PageProps) => {
       const response = await fetch(`/api/package/track?id=${encodeURIComponent(params.id)}`);
       if (!response.ok) throw new Error('Failed to fetch package');
       const data = await response.json();
-      setPackage(data.package);
-      setHistory(data.history);
+      setPackageData(data.package);
+      setShipmentHistory(data.history);
       setCurrentLocation(data.package.currentLocation || '');
       setStatus(data.package.status || '');
       setPackageForm({
@@ -316,21 +317,21 @@ const ManagePackage = ({ params }: PageProps) => {
             <dl className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
               <div>
                 <dt className="text-sm font-medium text-gray-500">Tracking ID</dt>
-                <dd className="mt-1 text-sm text-gray-900">{package_?.trackingID}</dd>
+                <dd className="mt-1 text-sm text-gray-900">{packageData?.trackingID}</dd>
               </div>
               <div>
                 <dt className="text-sm font-medium text-gray-500">Current Status</dt>
-                <dd className="mt-1 text-sm text-gray-900">{package_?.status}</dd>
+                <dd className="mt-1 text-sm text-gray-900">{packageData?.status}</dd>
               </div>
               <div>
                 <dt className="text-sm font-medium text-gray-500">Current Location</dt>
-                <dd className="mt-1 text-sm text-gray-900">{package_?.currentLocation}</dd>
+                <dd className="mt-1 text-sm text-gray-900">{packageData?.currentLocation}</dd>
               </div>
               <div>
                 <dt className="text-sm font-medium text-gray-500">Expected Delivery</dt>
                 <dd className="mt-1 text-sm text-gray-900">
-                  {package_?.expectedDeliveryDate
-                    ? new Date(package_.expectedDeliveryDate).toLocaleDateString()
+                  {packageData?.expectedDeliveryDate
+                    ? new Date(packageData.expectedDeliveryDate).toLocaleDateString()
                     : 'Not specified'}
                 </dd>
               </div>
@@ -640,10 +641,10 @@ const ManagePackage = ({ params }: PageProps) => {
             <h2 className="text-lg font-medium text-gray-900 mb-6">Shipment History</h2>
             <div className="flow-root">
               <ul role="list" className="-mb-8">
-                {history.map((event: any, idx) => (
+                {shipmentHistory.map((event: any, idx) => (
                   <li key={event.createdAt.toString()}>
                     <div className="relative pb-8">
-                      {idx !== history.length - 1 && (
+                      {idx !== shipmentHistory.length - 1 && (
                         <span
                           className="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"
                           aria-hidden="true"
@@ -698,8 +699,6 @@ const ManagePackage = ({ params }: PageProps) => {
       )}
     </div>
   );
-}
+};
 
-
-
-export default ManagePackage
+export default ManagePackage;
