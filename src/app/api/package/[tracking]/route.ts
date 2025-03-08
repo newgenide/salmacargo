@@ -7,8 +7,7 @@ interface params {
 }
 
 export async function GET(
-    req: NextRequest,
-    { params }: { params: params }
+    { params }: { params: any }
 ) {
     try {
         await connectDb();
