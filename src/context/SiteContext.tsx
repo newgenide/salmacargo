@@ -23,6 +23,7 @@ const defaultSiteData: SiteData = {
 
 const defaultContext: SiteContextType = {
   siteData: defaultSiteData,
+  ...defaultSiteData,
   isLoading: true
 };
 
