@@ -2,12 +2,13 @@
 import PackageManager from './PackageManager';
 
 
-interface Props {
-  params: { id: string }
+interface PageProps {
+  params: { id: string };
 }
 
-export default function Page({ params }: Props) {
+export default async function Page({ params }: PageProps) {
+  const {id} = await params;
   return (
-    <PackageManager id={params.id} />
+    <PackageManager id={id} />
   );
 }
