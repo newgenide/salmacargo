@@ -21,16 +21,12 @@ const defaultSiteData: SiteData = {
   email: 'info@courier.com'
 };
 
-const defaultContext: any = {
+const defaultContext: SiteContextType = {
   siteData: defaultSiteData,
-  siteName: 'Courier Services',
-  address: '123 Shipping Lane, Logistics City',
-  phone: '',
-  email: 'info@courier.com',
   isLoading: true
 };
 
-const SiteContext = createContext<SiteContextType>(defaultContext);
+const SiteContext = createContext(defaultContext);
 
 export const useSite = () => useContext(SiteContext);
 
