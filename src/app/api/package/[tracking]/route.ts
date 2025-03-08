@@ -27,7 +27,8 @@ export async function GET(
 
 export async function PUT(
     req: NextRequest,
-    { params }: any 
+    _:any,
+    { params }: { params: any } 
 ) {
     try {
         await connectDb();
