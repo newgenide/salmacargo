@@ -21,9 +21,12 @@ const defaultSiteData: SiteData = {
   email: 'info@courier.com'
 };
 
-const defaultContext: SiteContextType = {
+const defaultContext: any = {
   siteData: defaultSiteData,
-  ...defaultSiteData,
+  siteName: 'Courier Services',
+  address: '123 Shipping Lane, Logistics City',
+  phone: '',
+  email: 'info@courier.com',
   isLoading: true
 };
 
