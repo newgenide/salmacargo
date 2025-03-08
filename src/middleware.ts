@@ -5,7 +5,7 @@ import { getToken } from 'next-auth/jwt';
 export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
   const isAdminPath = request.nextUrl.pathname.startsWith('/admin');
-  const isAuthPath = request.nextUrl.pathname.startsWith('/admin/login');
+  const isAuthPath = request.nextUrl.pathname.startsWith('/login');
 
   // Protect admin routes
   if (isAdminPath) {
@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
 
     // Require authentication for all other admin routes
     if (!token) {
-      const loginUrl = new URL('/admin/login', request.url);
+      const loginUrl = new URL('/login', request.url);
       loginUrl.searchParams.set('callbackUrl', request.nextUrl.pathname);
       return NextResponse.redirect(loginUrl);
     }

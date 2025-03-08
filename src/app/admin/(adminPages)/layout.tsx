@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Package, Settings, Home, LogOut } from 'lucide-react';
-import { signOut } from 'next-auth/react';
+import { SessionProvider, signOut } from 'next-auth/react';
 
 export default function AdminLayout({
   children,
@@ -33,6 +33,7 @@ export default function AdminLayout({
   };
 
   return (
+    <SessionProvider>
     <div className="min-h-screen bg-gray-50">
       {/* Mobile sidebar backdrop */}
       {isSidebarOpen && (
@@ -119,5 +120,6 @@ export default function AdminLayout({
         </div>
       </main>
     </div>
+    </SessionProvider>
   );
 }

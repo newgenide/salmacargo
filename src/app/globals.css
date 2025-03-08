@@ -28,9 +28,41 @@
 
 @layer base {
   body {
-    @apply bg-background text-text-primary;
+    background-color: var(--background);
+    color: var(--text-primary);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Print styles */
+@media print {
+  /* Hide all elements except printable content */
+  body > *:not(.print-only) {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Reset background colors and shadows for better printing */
+  * {
+    background: white !important;
+    box-shadow: none !important;
+    print-color-adjust: exact !important;
+    -webkit-print-color-adjust: exact !important;
+  }
+
+  /* Ensure text colors print properly */
+  .text-foreground {
+    color: #000 !important;
+  }
+  .text-foreground\/60 {
+    color: #666 !important;
   }
 }
