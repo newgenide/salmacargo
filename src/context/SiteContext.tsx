@@ -21,7 +21,7 @@ const defaultSiteData: SiteData = {
   email: 'info@courier.com'
 };
 
-const defaultContext: SiteContextType = {
+const defaultContext: any = {
   siteData: defaultSiteData,
   isLoading: true
 };
