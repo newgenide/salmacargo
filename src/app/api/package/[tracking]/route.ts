@@ -106,7 +106,6 @@ export async function PUT(
 
 export async function DELETE(
     req: NextRequest,
-    _:any,
     { params }: any
 ) {
     try {
