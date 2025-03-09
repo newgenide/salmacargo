@@ -68,8 +68,8 @@ export async function PUT(req: NextRequest) {
         // check if transit is already created to avoid mutiple duplicates
         if (status.toLowerCase() == 'in transit') {
             await sendEmail({
-                email: package_.email,
-                name: package_.name,
+                email: package_.receiverEmail,
+                name: package_.receiverName,
                 type: 'shipped',
                 trackingNumber: package_.trackingID
             });
@@ -77,8 +77,8 @@ export async function PUT(req: NextRequest) {
         
         if (status.toLowerCase() == 'delivered') {
             await sendEmail({
-                email: package_.email,
-                name: package_.name,
+                email: package_.receiverEmail,
+                name: package_.receiverName,
                 type: 'arrived',
                 trackingNumber: package_.trackingID
             });
@@ -86,8 +86,8 @@ export async function PUT(req: NextRequest) {
 
         if (status.toLowerCase() == 'cancelled') {
             await sendEmail({
-                email: package_.email,
-                name: package_.name,
+                email: package_.receiverEmail,
+                name: package_.receiverName,
                 type: 'cancelled',
                 trackingNumber: package_.trackingID
             });
