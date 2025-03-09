@@ -66,7 +66,7 @@ export async function PUT(req: NextRequest) {
 
         // send email notification for transit, delivered and cancelled
         // check if transit is already created to avoid mutiple duplicates
-        if (status === 'in transit') {
+        if (status == 'in transit') {
             await sendEmail({
                 email: package_.email,
                 name: package_.name,
@@ -75,7 +75,7 @@ export async function PUT(req: NextRequest) {
             });
         }
         
-        if (status === 'delivered') {
+        if (status == 'delivered') {
             await sendEmail({
                 email: package_.email,
                 name: package_.name,
@@ -84,7 +84,7 @@ export async function PUT(req: NextRequest) {
             });
         }
 
-        if (status === 'cancelled') {
+        if (status == 'cancelled') {
             await sendEmail({
                 email: package_.email,
                 name: package_.name,
