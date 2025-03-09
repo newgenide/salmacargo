@@ -15,10 +15,10 @@ interface SiteContextType {
 }
 
 const defaultSiteData: SiteData = {
-  siteName: 'Courier Services',
-  address: '123 Shipping Lane, Logistics City',
-  phone: '',
-  email: 'info@courier.com'
+  siteName: 'Salma Cargo',
+  address: 'Pitsford Street, Birmingham B18 6QU, UK',
+  phone: '+44 7460 657162',
+  email: 'info@salmacargo.com'
 };
 
 const defaultContext: any = {

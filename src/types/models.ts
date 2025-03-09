@@ -84,7 +84,7 @@ export interface IPackage {
   /**
    * Package status
    */
-  status: 'pending' | 'processing' | 'in transit' | 'delivered' | 'cancelled';
+  status: 'pending' | 'on hold' | 'processing' | 'in transit' | 'delivered' | 'cancelled';
   /**
    * Current location
    */

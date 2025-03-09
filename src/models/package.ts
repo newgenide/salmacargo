@@ -61,7 +61,7 @@ const PackageSchema = new Schema<IPackage>({
     },
     status: {
         type: String,
-        enum: ['pending', 'processing', 'in transit', 'delivered', 'cancelled'],
+        enum: ['pending', 'on hold', 'processing', 'in transit', 'delivered', 'cancelled'],
         default: 'pending',
         required: true
     }
