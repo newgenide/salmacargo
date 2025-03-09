@@ -13,7 +13,7 @@ export default function ShippedEmail({ name, trackingNumber }: { name: string; t
             <Text>Hello {name},</Text>
             <Text>Your package is now on its way! Here is your tracking number:</Text>
             <Text style={styles.tracking}>📍 <strong>{trackingNumber}</strong></Text>
-            <Link href={`https://www.salmacargo.com/track/${trackingNumber}`} style={styles.button}>
+            <Link href={`https://www.salmacargo.com/tracking/${trackingNumber}`} style={styles.button}>
               Track Your Package
             </Link>
             <Text>Thank you for choosing Salma Cargo.</Text>
