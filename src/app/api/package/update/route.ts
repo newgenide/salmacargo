@@ -64,12 +64,6 @@ export async function PUT(req: NextRequest) {
             notes: notes || `Package ${status} at ${currentLocation}`
         });
 
-        await sendEmail({
-            email: package_.receiverEmail,
-            name: package_.receiverName,
-            type: 'shipped',
-            trackingNumber: package_.trackingID
-        });
         // send email notification for transit, delivered and cancelled
         // check if transit is already created to avoid mutiple duplicates
         if (status === 'in transit') {
