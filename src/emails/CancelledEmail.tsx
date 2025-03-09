@@ -8,9 +8,6 @@ export default function CancelledEmail({ name, trackingNumber }: { name: string;
       <Preview>Your package has been cancelled.</Preview>
       <Body style={styles.body}>
         <Container style={styles.container}>
-          <Section style={styles.header}>
-            <Img src="https://www.salmacargo.com/logo.png" width="150" alt="Salma Cargo" />
-          </Section>
           <Section style={styles.content}>
             <Text style={styles.heading}>❌ Your Package Has Been Cancelled</Text>
             <Text>Hello {name},</Text>

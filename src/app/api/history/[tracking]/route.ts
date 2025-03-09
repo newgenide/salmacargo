@@ -82,11 +82,10 @@ export async function PUT(req:NextRequest){
     }
 }
 
-export async function DELETE(req:NextRequest){
+export async function DELETE(req:NextRequest, { params }: { params: { tracking: string } }){
     try{
-        const {id} = await req.json();   
         await connectDb();
-        await ShipmentHistory.findOneAndDelete({_id: id});
+        await ShipmentHistory.findOneAndDelete({_id: params.tracking});
         return NextResponse.json({message:"history delete successfully"});
     }
     catch(error:any){

@@ -8,9 +8,6 @@ export default function ShippedEmail({ name, trackingNumber }: { name: string; t
       <Preview>Your package has been shipped! Track it now.</Preview>
       <Body style={styles.body}>
         <Container style={styles.container}>
-          <Section style={styles.header}>
-            <Img src="https://www.salmacargo.com/logo.png" width="150" alt="Salma Cargo" />
-          </Section>
           <Section style={styles.content}>
             <Text style={styles.heading}>📦 Your Package Has Been Shipped!</Text>
             <Text>Hello {name},</Text>

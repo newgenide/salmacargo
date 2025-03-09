@@ -190,7 +190,7 @@ export default function PackageManager({ id }: { id: string }) {
     try {
       setError(null);
       const response = await fetch(`/api/history/${id}`, {
-        method: 'DELETE',
+        method: 'DELETE'
       });
 
       if (!response.ok) {
