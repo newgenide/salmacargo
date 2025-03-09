@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import Package from "@/models/package";
 import ShipmentHistory from "@/models/history";
+import { sendEmail } from "@/utils/sendEmail";
 
 export async function PUT(req: NextRequest) {
     try {
@@ -63,10 +64,42 @@ export async function PUT(req: NextRequest) {
             notes: notes || `Package ${status} at ${currentLocation}`
         });
 
-        // If status is delivered or cancelled, we might want to send notifications
-        if (status === 'delivered' || status === 'cancelled') {
-            // TODO: Implement email notifications using the email service API
-            // This would be handled by a separate service/utility
+        // send email notification for transit, delivered and cancelled
+        // check if transit is already created to avoid mutiple duplicates
+        if (status === 'in transit') {
+            const transit = await ShipmentHistory.findOne({ trackingID, status: 'in transit' });
+            if (!transit) {
+                await sendEmail({
+                    email: package_.email,
+                    name: package_.name,
+                    type: 'shipped',
+                    trackingNumber: package_.trackingID
+                });
+            }
+        }
+        
+        if (status === 'delivered') {
+            const delivered = await ShipmentHistory.findOne({ trackingID, status: 'delivered' });
+            if (!delivered) {
+                await sendEmail({
+                    email: package_.email,
+                    name: package_.name,
+                    type: 'arrived',
+                    trackingNumber: package_.trackingID
+                });
+            }
+        }
+
+        if (status === 'cancelled') {
+            const cancelled = await ShipmentHistory.findOne({ trackingID, status: 'cancelled' });
+            if (!cancelled) {
+                await sendEmail({
+                    email: package_.email,
+                    name: package_.name,
+                    type: 'cancelled',
+                    trackingNumber: package_.trackingID
+                });
+            }
         }
 
         return NextResponse.json({
