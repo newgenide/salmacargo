@@ -3,13 +3,14 @@ import { NextResponse } from "next/server";
 import ShippedEmail from "@/emails/ShippedEmail";
 import ArrivedEmail from "@/emails/ArrivedEmail";
 import CancelledEmail from "@/emails/CancelledEmail";
+import DamagedEmail from "@/emails/DamagedEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendEmail({ email, name, type, trackingNumber }:{
     email: string;
     name: string;
-    type: 'shipped' | 'arrived' | 'cancelled';
+    type: 'shipped' | 'arrived' | 'damaged';
     trackingNumber: string;
 }) {
   try {
@@ -25,9 +26,9 @@ export async function sendEmail({ email, name, type, trackingNumber }:{
         EmailComponent = ArrivedEmail;
         subject = "✅ Your Package Has Arrived!";
         break;
-      case "cancelled":
-        EmailComponent = CancelledEmail;
-        subject = "❌ Your Package Has Been Cancelled";
+      case "damaged":
+        EmailComponent = DamagedEmail;
+        subject = "❌ Your Package Was Damaged";
         break;
       default:
         throw new Error("Invalid email type");

@@ -356,12 +356,11 @@ export default function PackageManager({ id }: { id: string }) {
                   required
                 >
                   <option value="">Select status</option>
-                  <option value="pending">Pending</option>
-                  <option value="on hold">On Hold</option>
-                  <option value="processing">Processing</option>
+                  <option value="order received">Order Received</option>
                   <option value="in transit">In Transit</option>
+                  <option value="on hold">On Hold</option>
                   <option value="delivered">Delivered</option>
-                  <option value="cancelled">Cancelled</option>
+                  <option value="cancelled">Damaged</option>
                 </select>
               </div>
 

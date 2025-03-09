@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Menu, X, Phone, Mail, Search, ChevronDown, MapPin } from 'lucide-react';
 import { useSite } from '@/context/SiteContext';
+import Image from 'next/image';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -96,7 +97,14 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="flex items-center">
-            <span className="text-primary font-bold text-xl">{site.siteData.siteName}</span>
+          <Image
+          alt={site.siteData.siteName}
+          width={512}
+          height={512}
+          style={{
+            width: 150
+          }}
+          src={"/logo2.png"}/>
           </Link>
 
           {/* Desktop Menu */}

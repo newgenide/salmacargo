@@ -84,11 +84,11 @@ export async function PUT(req: NextRequest) {
             });
         }
 
-        if (status.toLowerCase() == 'cancelled') {
+        if (status.toLowerCase() == 'damaged') {
             await sendEmail({
                 email: package_.receiverEmail,
                 name: package_.receiverName,
-                type: 'cancelled',
+                type: 'damaged',
                 trackingNumber: package_.trackingID
             });
         }

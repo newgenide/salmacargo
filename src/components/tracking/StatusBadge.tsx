@@ -8,17 +8,13 @@ interface StatusBadgeProps {
 }
 
 const statusConfig = {
-  pending: {
+  'order received': {
     color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     label: 'Pending'
   },
   'on hold': {
     color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
     label: 'On Hold'
-  },
-  processing: {
-    color: 'bg-blue-100 text-blue-800 border-blue-200',
-    label: 'Processing'
   },
   'in transit': {
     color: 'bg-purple-100 text-purple-800 border-purple-200',
@@ -28,7 +24,7 @@ const statusConfig = {
     color: 'bg-green-100 text-green-800 border-green-200',
     label: 'Delivered'
   },
-  cancelled: {
+  'damaged': {
     color: 'bg-red-100 text-red-800 border-red-200',
     label: 'Cancelled'
   }
