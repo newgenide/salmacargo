@@ -10,7 +10,7 @@ interface StatusBadgeProps {
 const statusConfig = {
   'order received': {
     color: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-    label: 'Pending'
+    label: 'Order received'
   },
   'on hold': {
     color: 'bg-yellow-100 text-yellow-800 border-yellow-200',

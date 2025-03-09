@@ -41,7 +41,7 @@ export default function CreatePackagePage() {
     freight: 'land',
     charges: '',
     description: '',
-    status: 'pending',
+    status: 'order received',
     notes: '',
     expectedDeliveryDate: '',
   });

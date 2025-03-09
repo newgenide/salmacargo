@@ -153,7 +153,7 @@ export async function POST(req: NextRequest) {
       freight: body.freight,
       charges: body.charges,
       description: body.description,
-      status: body.status,
+      status: 'order received',
       notes: body.notes
     });
 
