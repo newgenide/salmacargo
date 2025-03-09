@@ -82,7 +82,7 @@ export async function PUT(req:NextRequest){
     }
 }
 
-export async function DELETE(req:NextRequest, { params }: { params: { tracking: string } }){
+export async function DELETE(req:NextRequest,_:any, { params }: { params: { tracking: string } }){
     try{
         await connectDb();
         await ShipmentHistory.findOneAndDelete({_id: params.tracking});
