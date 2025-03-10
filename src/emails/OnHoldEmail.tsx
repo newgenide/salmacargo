@@ -1,28 +1,27 @@
 import * as React from "react";
 import { Html, Head, Preview, Body, Container, Section, Text, Link, Img } from "@react-email/components";
 
-export default function DamagedEmail({ name, trackingNumber }: { name: string; trackingNumber: string }) {
+export default function OnHoldEmail({ name, trackingNumber }: { name: string; trackingNumber: string }) {
   return (
     <Html>
       <Head />
-      <Preview>There was an issue with your package.</Preview>
+      <Preview>Your package is on hold. Please check for further instructions.</Preview>
       <Body style={styles.body}>
         <Container style={styles.container}>
           <Section style={styles.content}>
-            <Text style={styles.heading}>⚠️ Your Package Was Damaged</Text>
+            <Text style={styles.heading}>📌 Your Package Is On Hold</Text>
             <Text>Hello {name},</Text>
             <Text>
-              We regret to inform you that your package sustained damage during transit. Our team is currently reviewing the situation.
+              Your package is currently on hold pending further verification or instructions. If this is unexpected or if you need further assistance,
+              please contact our support team.
             </Text>
-            <Text>If you need assistance or a replacement, please contact our support team.</Text>
             <Text style={styles.tracking}>
               📍 <strong>{trackingNumber}</strong>
             </Text>
+            <Link href={`https://www.salmacargo.com/tracking/${trackingNumber}`} style={styles.button}>
+              View Package Status
+            </Link>
             <Text>
-              We sincerely apologize for the inconvenience and appreciate your patience.
-            </Text>
-            <Text>Thank you for choosing Salma Cargo.</Text>
-            <Text style={styles.supportMessage}>
               If you have any questions or need help, please email us at{" "}
               <Link href="mailto:support@salmacargo.com" style={{ color: "#007bff", textDecoration: "none" }}>
                 support@salmacargo.com
@@ -32,6 +31,7 @@ export default function DamagedEmail({ name, trackingNumber }: { name: string; t
                 website
               </Link>.
             </Text>
+            <Text>Thank you for choosing Salma Cargo.</Text>
           </Section>
         </Container>
       </Body>
@@ -43,12 +43,15 @@ const styles: any = {
   body: { backgroundColor: "#f4f4f4", padding: "20px" },
   container: { backgroundColor: "#fff", padding: "20px", borderRadius: "8px" },
   content: { textAlign: "center" as const },
-  heading: { fontSize: "24px", fontWeight: "bold", marginBottom: "10px", color: "#d9534f" },
-  tracking: { fontSize: "20px", fontWeight: "bold", color: "#d9534f", margin: "10px 0" },
-  supportMessage: {
-    marginTop: "20px",
-    fontSize: "14px",
-    color: "#555",
-    lineHeight: "1.4"
+  heading: { fontSize: "24px", fontWeight: "bold", marginBottom: "10px" },
+  tracking: { fontSize: "20px", fontWeight: "bold", color: "#007bff", margin: "10px 0" },
+  button: {
+    display: "inline-block",
+    backgroundColor: "#007bff",
+    color: "#fff",
+    padding: "10px 20px",
+    borderRadius: "5px",
+    textDecoration: "none",
+    marginTop: "10px",
   },
 };

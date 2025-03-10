@@ -4,14 +4,16 @@ import ShippedEmail from "@/emails/ShippedEmail";
 import ArrivedEmail from "@/emails/ArrivedEmail";
 import CancelledEmail from "@/emails/CancelledEmail";
 import DamagedEmail from "@/emails/DamagedEmail";
+import OnHoldEmail from "@/emails/OnHoldEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function sendEmail({ email, name, type, trackingNumber }:{
+export async function sendEmail({ email, name, type, trackingNumber, pdfBuffer }:{
     email: string;
     name: string;
-    type: 'shipped' | 'arrived' | 'damaged';
+    type: 'shipped' | 'arrived' | 'damaged' | 'on hold';
     trackingNumber: string;
+    pdfBuffer?: Buffer
 }) {
   try {
     let EmailComponent;
@@ -26,6 +28,10 @@ export async function sendEmail({ email, name, type, trackingNumber }:{
         EmailComponent = ArrivedEmail;
         subject = "✅ Your Package Has Arrived!";
         break;
+      case "on hold":
+        EmailComponent = OnHoldEmail;
+        subject = "📦 Your Package Is On Hold";
+        break;
       case "damaged":
         EmailComponent = DamagedEmail;
         subject = "❌ Your Package Was Damaged";
@@ -34,11 +40,21 @@ export async function sendEmail({ email, name, type, trackingNumber }:{
         throw new Error("Invalid email type");
     }
 
+
     const { data, error } = await resend.emails.send({
       from: "Salma Cargo <noreply@salmacargo.com>",
       to: email,
       subject,
       react: EmailComponent({ name, trackingNumber }),
+      attachments: type === 'shipped'
+      ?  [
+        {
+          filename: `Shipment_Receipt_${trackingNumber}.pdf`,
+          content: pdfBuffer?.toString("base64"), // Convert buffer to base64 string
+          contentType: "application/pdf",
+        },
+      ]
+      :[]
     });
 
     if (error) throw error;

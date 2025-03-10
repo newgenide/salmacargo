@@ -360,7 +360,7 @@ export default function PackageManager({ id }: { id: string }) {
                   <option value="in transit">In Transit</option>
                   <option value="on hold">On Hold</option>
                   <option value="delivered">Delivered</option>
-                  <option value="cancelled">Damaged</option>
+                  <option value="damaged">Damaged</option>
                 </select>
               </div>
 

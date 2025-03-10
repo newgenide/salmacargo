@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import Package from "@/models/package";
 import ShipmentHistory from "@/models/history";
 import { sendEmail } from "@/utils/sendEmail";
+import { generateReceiptPdf } from "@/utils/generatePdf";
 
 export async function PUT(req: NextRequest) {
     try {
@@ -28,7 +29,7 @@ export async function PUT(req: NextRequest) {
         }
 
         // Validate status
-        const validStatuses = ['pending', 'processing', 'in transit', 'delivered', 'cancelled'];
+        const validStatuses = [ 'order received', 'in transit', 'on hold', 'delivered', 'damaged'];
         if (!validStatuses.includes(status)) {
             return NextResponse.json({ 
                 message: 'Invalid status value' 
@@ -67,11 +68,29 @@ export async function PUT(req: NextRequest) {
         // send email notification for transit, delivered and cancelled
         // check if transit is already created to avoid mutiple duplicates
         if (status.toLowerCase() == 'in transit') {
+            // Generate PDF in memory
+            const pdfBuffer = await generateReceiptPdf(
+                package_.trackingID,
+                package_.senderName,
+                package_.originAddress,
+                package_.receiverName,
+                package_.destinationAddress,
+                package_.senderEmail,
+                package_.receiverEmail,
+                package_.description,
+                'Shipped',
+                package_.createdAt.toDateString(),
+                package_.expectedDeliveryDate.toDateString(),
+                package_.weight,
+                package_.charges
+            );
+            
             await sendEmail({
                 email: package_.receiverEmail,
                 name: package_.receiverName,
                 type: 'shipped',
-                trackingNumber: package_.trackingID
+                trackingNumber: package_.trackingID,
+                pdfBuffer
             });
         }
         
@@ -92,6 +111,16 @@ export async function PUT(req: NextRequest) {
                 trackingNumber: package_.trackingID
             });
         }
+
+        if (status.toLowerCase() == 'on hold') {
+            await sendEmail({
+                email: package_.receiverEmail,
+                name: package_.receiverName,
+                type: 'on hold',
+                trackingNumber: package_.trackingID
+            });
+        }
+
 
         return NextResponse.json({
             message: 'Package updated successfully',

@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import * as fetch from 'node-fetch'
 
 export async function generateTracking(){
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = 'SAL';
     for (let i = 0; i < 10; i++) {
         result += characters.charAt(Math.floor(Math.random() * characters.length));
     }

@@ -1,16 +1,39 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useState } from 'react';
-import { Menu, X, Phone, Mail, Search, ChevronDown, MapPin } from 'lucide-react';
-import { useSite } from '@/context/SiteContext';
 import Image from 'next/image';
+import { Menu, X, Phone, Mail, ChevronDown, MapPin } from 'lucide-react';
+import { useSite } from '@/context/SiteContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTrackingOpen, setIsTrackingOpen] = useState(false);
   const [trackingNumber, setTrackingNumber] = useState('');
   const site = useSite();
+
+  // Inject Google Translate script on mount
+  useEffect(() => {
+    const existingScript = document.getElementById('google_translate_script');
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.id = 'google_translate_script';
+      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+    // Define the initialization function
+    (window as any).googleTranslateElementInit = () => {
+      if (document.getElementById('google_translate_element')) return;
+      const div = document.createElement('div');
+      div.id = 'google_translate_element';
+      document.body.appendChild(div);
+      new (window as any).google.translate.TranslateElement(
+        { pageLanguage: 'en', autoDisplay: false },
+        'google_translate_element'
+      );
+    };
+  }, []);
 
   const handleTracking = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,11 +49,17 @@ const Navbar = () => {
         <div className="container mx-auto px-4 py-2">
           <div className="flex justify-between items-center text-sm">
             <div className="flex items-center space-x-6">
-              <a href={`mailto:${site.siteData.email}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
+              <a
+                href={`mailto:${site.siteData.email}`}
+                className="flex items-center text-text-primary hover:text-primary transition-colors"
+              >
                 <Mail className="h-4 w-4 mr-2" />
                 {site.siteData.email}
               </a>
-              <a href={`tel:${site.siteData.phone}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
+              <a
+                href={`tel:${site.siteData.phone}`}
+                className="flex items-center text-text-primary hover:text-primary transition-colors"
+              >
                 <Phone className="h-4 w-4 mr-2" />
                 {site.siteData.phone}
               </a>
@@ -40,25 +69,24 @@ const Navbar = () => {
               </div>
             </div>
             <div className="flex items-center space-x-4">
+              {/* Google Translate Dropdown */}
               <div className="relative">
                 <select
                   className="appearance-none bg-white text-text-primary pr-8 pl-2 py-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/20"
                   onChange={(e) => {
                     const lang = e.target.value;
-                    // Get the Google Translate widget
+                    // Get the Google Translate widget container
                     const element = document.getElementById('google_translate_element');
                     if (element) {
                       // Find the select within the widget
                       const selects = element.getElementsByTagName('select');
                       if (selects.length > 0) {
                         const gtSelect = selects[0];
-                        // Set the value and trigger change
                         gtSelect.value = lang;
-                        // Create and dispatch change event
                         const event = new Event('change', { bubbles: true });
                         gtSelect.dispatchEvent(event);
                       } else {
-                        // If select not found, try to initialize Google Translate
+                        // Wait for the widget to initialize if the select isn't there yet
                         const waitForGoogle = setInterval(() => {
                           const newSelects = element.getElementsByTagName('select');
                           if (newSelects.length > 0) {
@@ -69,7 +97,6 @@ const Navbar = () => {
                             gtSelect.dispatchEvent(event);
                           }
                         }, 100);
-                        // Clear interval after 5 seconds
                         setTimeout(() => clearInterval(waitForGoogle), 5000);
                       }
                     }
@@ -97,22 +124,29 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           <Link href="/" className="flex items-center">
-          <Image
-          alt={site.siteData.siteName}
-          width={512}
-          height={512}
-          style={{
-            width: 150
-          }}
-          src={"/logo2.png"}/>
+            <Image
+              alt={site.siteData.siteName}
+              width={512}
+              height={512}
+              style={{ width: 150 }}
+              src="/logo2.png"
+            />
           </Link>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/" className="text-text-primary hover:text-primary transition-colors">Home</Link>
-            <Link href="/about" className="text-text-primary hover:text-primary transition-colors">About</Link>
-            <Link href="/faq" className="text-text-primary hover:text-primary transition-colors">FAQ</Link>
-            <Link href="/contact" className="text-text-primary hover:text-primary transition-colors">Contact</Link>
+            <Link href="/" className="text-text-primary hover:text-primary transition-colors">
+              Home
+            </Link>
+            <Link href="/about" className="text-text-primary hover:text-primary transition-colors">
+              About
+            </Link>
+            <Link href="/faq" className="text-text-primary hover:text-primary transition-colors">
+              FAQ
+            </Link>
+            <Link href="/contact" className="text-text-primary hover:text-primary transition-colors">
+              Contact
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -128,16 +162,30 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden pb-4">
             <div className="flex flex-col space-y-4">
-              <Link href="/" className="text-text-primary hover:text-primary transition-colors">Home</Link>
-              <Link href="/about" className="text-text-primary hover:text-primary transition-colors">About</Link>
-              <Link href="/faq" className="text-text-primary hover:text-primary transition-colors">FAQ</Link>
-              <Link href="/contact" className="text-text-primary hover:text-primary transition-colors">Contact</Link>
+              <Link href="/" className="text-text-primary hover:text-primary transition-colors">
+                Home
+              </Link>
+              <Link href="/about" className="text-text-primary hover:text-primary transition-colors">
+                About
+              </Link>
+              <Link href="/faq" className="text-text-primary hover:text-primary transition-colors">
+                FAQ
+              </Link>
+              <Link href="/contact" className="text-text-primary hover:text-primary transition-colors">
+                Contact
+              </Link>
               <div className="pt-4 border-t space-y-2">
-                <a href={`mailto:${site.siteData.email}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
+                <a
+                  href={`mailto:${site.siteData.email}`}
+                  className="flex items-center text-text-primary hover:text-primary transition-colors"
+                >
                   <Mail className="h-4 w-4 mr-2" />
                   {site.siteData.email}
                 </a>
-                <a href={`tel:${site.siteData.phone}`} className="flex items-center text-text-primary hover:text-primary transition-colors">
+                <a
+                  href={`tel:${site.siteData.phone}`}
+                  className="flex items-center text-text-primary hover:text-primary transition-colors"
+                >
                   <Phone className="h-4 w-4 mr-2" />
                   {site.siteData.phone}
                 </a>
