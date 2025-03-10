@@ -1,3 +1,12 @@
+export const config = { runtime: 'nodejs' };
+
+import crypto from 'crypto';
+if (!globalThis.crypto) {
+  // Use Node's built-in WebCrypto implementation
+  (globalThis as any).crypto = crypto.webcrypto;
+}
+
+
 import { connectDb, geocodeAddress } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";

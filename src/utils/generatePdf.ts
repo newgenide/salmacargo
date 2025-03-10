@@ -1,9 +1,9 @@
 export const config = { runtime: 'nodejs' };
 
 import crypto from 'crypto';
-// Bypass the type check by casting global to any
-if (!(global as any).crypto) {
-  (global as any).crypto = crypto;
+if (!globalThis.crypto) {
+  // Use Node's built-in WebCrypto implementation
+  (globalThis as any).crypto = crypto.webcrypto;
 }
 
 
