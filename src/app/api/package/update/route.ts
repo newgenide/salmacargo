@@ -1,9 +1,17 @@
 export const config = { runtime: 'nodejs' };
 
 import crypto from 'crypto';
+
+// Ensure globalThis.crypto exists
 if (!globalThis.crypto) {
-  // Use Node's built-in WebCrypto implementation
-  (globalThis as any).crypto = crypto.webcrypto;
+  (globalThis as any).crypto = {};
+}
+
+// Cast globalThis.crypto as any to assign SHA224
+if (!(globalThis as any).crypto.SHA224) {
+  (globalThis as any).crypto.SHA224 = function (data: Buffer | string) {
+    return crypto.createHash('sha224').update(data).digest();
+  };
 }
 
 
