@@ -21,8 +21,8 @@ export default function ShippedEmail({ name, trackingNumber }: { name: string; t
             <Text>Thank you for choosing Salma Cargo.</Text>
             <Text style={styles.supportMessage}>
               If you have any questions or need help, please email us at{" "}
-              <Link href="mailto:support@salmacargo.com" style={{ color: "#007bff", textDecoration: "none" }}>
-                support@salmacargo.com
+              <Link href="mailto:info@salmacargo.com" style={{ color: "#007bff", textDecoration: "none" }}>
+                info@salmacargo.com
               </Link>{" "}
               or chat with our customer support on our{" "}
               <Link href="https://www.salmacargo.com" style={{ color: "#007bff", textDecoration: "none" }}>
