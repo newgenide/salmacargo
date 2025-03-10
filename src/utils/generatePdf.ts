@@ -1,3 +1,12 @@
+export const config = { runtime: 'nodejs' };
+
+import crypto from 'crypto';
+// Bypass the type check by casting global to any
+if (!(global as any).crypto) {
+  (global as any).crypto = crypto;
+}
+
+
 import path from "path";
 import PDFDocument from "pdfkit";
 import fs from "fs";
