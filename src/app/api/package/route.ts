@@ -1,3 +1,7 @@
+export const config = {
+  runtime: 'nodejs'
+}
+
 import { connectDb, geocodeAddress } from "@/utils";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
