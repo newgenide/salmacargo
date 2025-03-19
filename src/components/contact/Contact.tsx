@@ -4,7 +4,7 @@ import { useSite } from '@/context/SiteContext';
 import { Mail, Phone, MapPin } from 'lucide-react';
 
 const Contact = () => {
-  const siteData = useSite();
+  const site = useSite();
 
   return (
     <section className="py-24 px-4 bg-gray-50">
@@ -28,10 +28,10 @@ const Contact = () => {
             </div>
             <h3 className="text-lg font-semibold mb-2 text-text-primary">Email Us</h3>
             <a 
-              href={`mailto:${siteData.email}`}
+              href={`mailto:${site.siteData.email}`}
               className="text-primary hover:text-primary-light transition-colors"
             >
-              {siteData.email}
+              {site.siteData.email}
             </a>
           </div>
 
@@ -42,10 +42,10 @@ const Contact = () => {
             </div>
             <h3 className="text-lg font-semibold mb-2 text-text-primary">Call Us</h3>
             <a 
-              href={`tel:${siteData.phone}`}
+              href={`tel:${site.siteData.phone}`}
               className="text-primary hover:text-primary-light transition-colors"
             >
-              {siteData.phone}
+              {site.siteData.phone}
             </a>
           </div>
 
@@ -56,7 +56,7 @@ const Contact = () => {
             </div>
             <h3 className="text-lg font-semibold mb-2 text-text-primary">Visit Us</h3>
             <p className="text-text-secondary">
-              {siteData.address}
+              {site.siteData.address}
             </p>
           </div>
         </div>
