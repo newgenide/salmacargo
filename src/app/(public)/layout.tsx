@@ -17,15 +17,7 @@ export default async function PublicRootLayout({
     {children}
     <Footer/>
 
-    <Script
-          id="live-chat"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-              <script src="//code.jivosite.com/widget/HKQT2r7BW2" async></script>
-            `,
-          }}
-        />
+    <Script src="//code.jivosite.com/widget/HKQT2r7BW2" async></Script>
     </>
   )
 }
