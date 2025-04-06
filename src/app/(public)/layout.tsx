@@ -18,8 +18,8 @@ export default async function PublicRootLayout({
     <Footer/>
 
     <Script
-          id="smartsupp-live-chat"
-          strategy="afterInteractive"
+          id="live-chat"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
               <script src="//code.jivosite.com/widget/HKQT2r7BW2" async></script>
