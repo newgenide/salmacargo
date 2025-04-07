@@ -17,7 +17,7 @@ export default async function PublicRootLayout({
     {children}
     <Footer/>
 
-    <Script src="//code.jivosite.com/widget/HKQT2r7BW2" async></Script>
+    <Script src="//code.tidio.co/maqsuudmfh44liytsxxhmdvpjb7s5nqe.js" async></Script>
     </>
   )
 }
