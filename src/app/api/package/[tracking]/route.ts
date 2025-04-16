@@ -28,11 +28,12 @@ export async function GET(
 
 export async function PUT(
     req: NextRequest,
-    _:any,    { params }: { params: { tracking: string } }
+    _:any,    { params }: any
 ) {
     try {
+        const _params = await params;
         await connectDb();
-        const packageItem = await Package.findOne({ trackingID: params.tracking });
+        const packageItem = await Package.findOne({ trackingID: _params.tracking });
         const {
             senderName,
             senderEmail,
