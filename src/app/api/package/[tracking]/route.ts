@@ -27,8 +27,7 @@ export async function GET(
 }
 
 export async function PUT(
-    req: NextRequest,
-    _:any,    { params }: any
+    req: NextRequest, { params }: any
 ) {
     try {
         const _params = await params;
